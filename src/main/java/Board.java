@@ -1,6 +1,4 @@
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
 
 public class Board extends Group {
 
@@ -39,7 +37,7 @@ public class Board extends Group {
                         fields[i][j].setVisible(true);
                     }
                 }
-                if (j % 2 == 0) {
+                if (j % 2 == n % 2) {
                     if (i % 2 == 1) {
                         fields[i][j].setVisible(false);
                     }

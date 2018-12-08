@@ -18,7 +18,7 @@ public class Controller {
     final int gridPrefWidth = 200;
     final int menuBarPrefHeigth = 20;
     Pane pane;
-    Board group = new Board(4);
+    Board group = new Board(10);
 
     public Parent root(){
         BorderPane borderPane = new BorderPane();
