@@ -23,8 +23,15 @@ public class Controller {
         MenuBar menuBar = new MenuBar();
         Menu gameMenu = new Menu("Game");
         MenuItem newGame = new MenuItem("New Game");
+        MenuItem customGame = new MenuItem("Customize Rules");
+        gameMenu.getItems().addAll(newGame,customGame);
+        Menu infoMenu = new Menu("Info");
+        MenuItem rulesInfo = new MenuItem("Rules");
+        MenuItem authorInfo = new MenuItem("Authors");
+        infoMenu.getItems().addAll(rulesInfo,authorInfo);
+        menuBar.getMenus().addAll(gameMenu,infoMenu);
         return menuBar;
-    };
+    }
 
     public Node grid(){
         GridPane gridPane = new GridPane();
