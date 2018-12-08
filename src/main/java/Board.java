@@ -32,10 +32,13 @@ public class Board extends Group {
                     }
                 } else if (j >= vertical - n){
                     if ((i >= (horizontal / 2) - (vertical - j - 1)) && (i <= horizontal / 2 + (vertical - j - 1))){
-                        System.out.println(((horizontal / 2) - (vertical - j - 1)) + " " + ((horizontal / 2) + (vertical - j - 1)));
                         fields[i][j].setVisible(true);
                     }
-                } else if ()
+                } else {
+                    if((i >= (horizontal / 2) - (2 * n + Math.abs(2 * n - j))) && (i <= (horizontal / 2) + (2 * n + Math.abs(2 * n - j)))){
+                        fields[i][j].setVisible(true);
+                    }
+                }
                 if (j % 2 == 0) {
                     if (i % 2 == 1) {
                         fields[i][j].setVisible(false);
