@@ -10,22 +10,29 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class Controller {
 
-    Group group = new Group();
+    final int gridPrefWidth = 200;
+    final int menuBarPrefHeigth = 20;
+    Pane pane;
+    Board group = new Board(4);
 
     public Parent root(){
         BorderPane borderPane = new BorderPane();
-        borderPane.setTop(menu());
-        borderPane.setRight(grid());
-        borderPane.setCenter(pane());
+        borderPane.setTop(createMenu());
+        borderPane.setRight(createGrid());
+        pane = (Pane) createPane();
+        borderPane.setCenter(pane);
         //borderPane.setBottom(label());
         return borderPane;
     }
 
-    public Node menu(){
+    public Node createMenu(){
         MenuBar menuBar = new MenuBar();
+        menuBar.setPrefHeight(menuBarPrefHeigth);
         Menu gameMenu = new Menu("Game");
         MenuItem newGame = new MenuItem("New Game");
         MenuItem customGame = new MenuItem("Customize Rules");
@@ -38,14 +45,13 @@ public class Controller {
         return menuBar;
     }
 
-    public Node grid(){
+    public Node createGrid(){
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.TOP_CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(20);
         gridPane.setPadding(new Insets(20));
-        gridPane.setPrefWidth(200);
-        final Board k = new Board();
+        gridPane.setPrefWidth(gridPrefWidth);
         Button startGame = new Button("Start Game");
         HBox hBox1 = new HBox();
         hBox1.getChildren().add(startGame);
@@ -54,17 +60,28 @@ public class Controller {
         gridPane.add(playerInfo,0,1);
         Label currPlayer = new Label("Placeholder");
         gridPane.add(currPlayer,1,1);
-        Button endTurn = new Button("End Turn");
+        Button test = new Button("Test");
+        Button test2 = new Button("Test");
         HBox hBox2 = new HBox();
         hBox2.setAlignment(Pos.CENTER);
-        hBox2.getChildren().add(endTurn);
+        hBox2.getChildren().addAll(test,test2);
+        test.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                group.fillFields(pane.getHeight(), pane.getWidth());
+            }
+        });
+        test2.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+            }
+        });
         gridPane.add(hBox2,0,2,2,1);
         return gridPane;
     }
 
-    public Node pane(){
+    public Node createPane(){
         return new Pane(group);
     }
+
 
     /*public Node label(){
         Label label = new Label();

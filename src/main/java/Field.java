@@ -3,9 +3,8 @@ import javafx.scene.shape.Circle;
 public class Field extends Circle {
     private Player player;
 
-    Field(double x, double y, double r, Player player){
+    Field(double x, double y, double r){
         super(x,y,r);
-        setPlayer(player);
     }
 
     public void setPlayer(Player player) {
