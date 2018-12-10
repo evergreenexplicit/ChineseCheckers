@@ -8,6 +8,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Checkers");
         primaryStage.setScene(new Scene(new Controller().root(),800,600));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

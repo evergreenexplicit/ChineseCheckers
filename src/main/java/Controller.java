@@ -64,7 +64,7 @@ public class Controller {
         hBox2.getChildren().addAll(test,test2);
         test.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                group.fillFields(pane.getHeight(), pane.getWidth());
+                group.fillFields(pane.getHeight(), pane.getWidth(), 2);
             }
         });
         test2.setOnAction(new EventHandler<ActionEvent>() {
