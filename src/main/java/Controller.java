@@ -2,7 +2,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -10,17 +9,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 public class Controller {
 
     final int gridPrefWidth = 200;
-    final int menuBarPrefHeigth = 20;
+    final int menuBarPrefHeight = 20;
     Pane pane;
-    Board group = new Board(10);
+    Board group = new Board(4);
 
-    public Parent root(){
+    Parent root(){
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(createMenu());
         borderPane.setRight(createGrid());
@@ -30,9 +27,9 @@ public class Controller {
         return borderPane;
     }
 
-    public Node createMenu(){
+    private Node createMenu(){
         MenuBar menuBar = new MenuBar();
-        menuBar.setPrefHeight(menuBarPrefHeigth);
+        menuBar.setPrefHeight(menuBarPrefHeight);
         Menu gameMenu = new Menu("Game");
         MenuItem newGame = new MenuItem("New Game");
         MenuItem customGame = new MenuItem("Customize Rules");
@@ -45,7 +42,7 @@ public class Controller {
         return menuBar;
     }
 
-    public Node createGrid(){
+    private Node createGrid(){
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.TOP_CENTER);
         gridPane.setHgap(10);
@@ -78,7 +75,7 @@ public class Controller {
         return gridPane;
     }
 
-    public Node createPane(){
+    private Node createPane(){
         return new Pane(group);
     }
 
