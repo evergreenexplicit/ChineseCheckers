@@ -7,13 +7,14 @@ public class Board extends Group {
     int sideLength;
     int horizontal;
     int vertical;
-    Color defaultColor = Color.BLACK;
+    Color defaultColor;
 
     Board(int sideLength){
         this.sideLength = sideLength;
         this.horizontal = 6*sideLength+1;
         this.vertical = 4*sideLength+1;
         this.fields = new Field[horizontal][vertical];
+        defaultColor = Color.BLACK;
     }
 
     public void fillFields (double height, double width, int players){
@@ -25,7 +26,7 @@ public class Board extends Group {
             for (int i = 0; i < horizontal; i++) {
                 double fieldX = 20 + ((1 + (i * 1.25)) * radius);
                 double fieldY = 20 + ((1 + (j * 1.25 * Math.sqrt(3))) * radius);
-                fields[i][j] = new Field(fieldX, fieldY, radius);
+                fields[i][j] = new Field(fieldX, fieldY, radius, i, j);
                 fields[i][j].setFill(defaultColor);
                 fields[i][j].setVisible(false);
                 if (j < sideLength){
@@ -129,4 +130,17 @@ public class Board extends Group {
             }
         }
     }
+
+    public void setFieldColor(int horizontal, int vertical){
+        setFieldColor(horizontal,vertical,defaultColor);
+    }
+    public void setFieldColor(int horizontal, int vertical, Color color){
+        fields[horizontal][vertical].setFill(color);
+    }
+
+    public Color getFieldColor(int horizontal, int vertical){
+        return (Color) fields[horizontal][vertical].getFill();
+    }
+
+
 }
