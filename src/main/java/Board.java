@@ -131,9 +131,10 @@ public class Board extends Group {
         }
     }
 
-    public void setFieldColor(int horizontal, int vertical){
+    public void setFieldDefaultColor(int horizontal, int vertical){
         setFieldColor(horizontal,vertical,defaultColor);
     }
+
     public void setFieldColor(int horizontal, int vertical, Color color){
         fields[horizontal][vertical].setFill(color);
     }
@@ -142,5 +143,9 @@ public class Board extends Group {
         return (Color) fields[horizontal][vertical].getFill();
     }
 
+    public void swapFields(int firstHorizontal, int firstVertical, int secondHorizontal, int secondVertical){
+        setFieldColor(secondHorizontal, secondVertical, getFieldColor(firstHorizontal, firstVertical));
+        setFieldDefaultColor(firstHorizontal, firstVertical);
+    }
 
 }

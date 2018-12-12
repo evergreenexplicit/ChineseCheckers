@@ -8,19 +8,10 @@ public class Field extends Circle {
     private int vertical;
     private String response;
 
-    Field(double x, double y, double z){
-        super(x,y,z);
-    }
-
-    Field(double x, double y, double r, final int horizontal, final int vertical){
+    Field(double x, double y, double r, int horizontal, int vertical){
         super(x,y,r);
         this.horizontal=horizontal;
         this.vertical=vertical;
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                response = "CLICKED_" + getHorizontal() + "_" + getVertical();
-            }
-        });
     }
 
     public int getHorizontal() {
@@ -29,5 +20,9 @@ public class Field extends Circle {
 
     public int getVertical() {
         return vertical;
+    }
+
+    public String getResponse() {
+        return response;
     }
 }
