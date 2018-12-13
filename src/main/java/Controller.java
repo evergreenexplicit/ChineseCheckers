@@ -30,15 +30,15 @@ public class Controller {
     private Node createMenu(){
         MenuBar menuBar = new MenuBar();
         menuBar.setPrefHeight(menuBarPrefHeight);
-        Menu gameMenu = new Menu("Game");
+        //Menu gameMenu = new Menu("Game");
         MenuItem newGame = new MenuItem("New Game");
         MenuItem customGame = new MenuItem("Customize Rules");
-        gameMenu.getItems().addAll(newGame,customGame);
+        //gameMenu.getItems().addAll(newGame,customGame);
         Menu infoMenu = new Menu("Info");
         MenuItem rulesInfo = new MenuItem("Rules");
         MenuItem authorInfo = new MenuItem("Authors");
         infoMenu.getItems().addAll(rulesInfo,authorInfo);
-        menuBar.getMenus().addAll(gameMenu,infoMenu);
+        menuBar.getMenus().addAll(/*gameMenu,*/infoMenu);
         return menuBar;
     }
 
@@ -64,7 +64,7 @@ public class Controller {
         hBox2.getChildren().addAll(test,test2);
         test.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                group.fillFields(pane.getHeight(), pane.getWidth(), 2);
+                group.fillFields(pane.getHeight(), pane.getWidth(), 6);
             }
         });
         test2.setOnAction(new EventHandler<ActionEvent>() {
