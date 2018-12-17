@@ -1,4 +1,6 @@
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 public class Board extends Group implements Game{
@@ -148,4 +150,17 @@ public class Board extends Group implements Game{
         setFieldDefaultColor(firstHorizontal, firstVertical);
     }
 
+    public void test(){
+        for(int i=0; i<horizontal; i++){
+            for(int j=0; j<vertical; j++){
+                final int finalI = i;
+                final int finalJ = j;
+                fields[i][j].setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent event) {
+                        System.out.println("click: "+ finalI + " " + finalJ);
+                    }
+                });
+            }
+        }
+    }
 }

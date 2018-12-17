@@ -62,9 +62,10 @@ public class Controller {
         HBox hBox2 = new HBox();
         hBox2.setAlignment(Pos.CENTER);
         hBox2.getChildren().addAll(test,test2);
-        group.fillFields(pane.getHeight(), pane.getWidth(), 6);
         test2.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
+                group.fillFields(pane.getHeight(), pane.getWidth(), 6);
+                group.test();
             }
         });
         gridPane.add(hBox2,0,2,2,1);
@@ -75,9 +76,6 @@ public class Controller {
         return new Pane(group);
     }
 
-    public Board getGroup() {
-        return group;
-    }
 
     /*public Node label(){
         Label label = new Label();
