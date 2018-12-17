@@ -11,7 +11,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(client.getController().root(),800,600));
         primaryStage.setResizable(false);
         primaryStage.show();
-        client.play();
+        client.start();
     }
 
     public static void main(String[] args) {
