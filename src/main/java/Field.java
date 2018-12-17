@@ -8,8 +8,8 @@ public class Field extends Circle {
 
     Field(double x, double y, double r, int horizontal, int vertical){
         super(x,y,r);
-        this.guiX =horizontal;
-        this.guiY =vertical;
+        this.guiX = horizontal;
+        this.guiY = vertical;
     }
 
     public int getGuiX() {

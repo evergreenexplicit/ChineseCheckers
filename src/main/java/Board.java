@@ -1,7 +1,7 @@
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 
-public class Board extends Group {
+public class Board extends Group implements Game{
 
     Field[][] fields;
     int sideLength;

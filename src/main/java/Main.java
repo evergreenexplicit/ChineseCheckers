@@ -7,7 +7,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Checkers");
-        primaryStage.setScene(new Scene(new Controller().root(),800,600));
+        Controller controller = new Controller();
+        primaryStage.setScene(new Scene(controller.root(),800,600));
         primaryStage.setResizable(false);
         primaryStage.show();
     }
