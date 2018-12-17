@@ -7,11 +7,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Checkers");
-        Controller controller = new Controller();
-        primaryStage.setScene(new Scene(controller.root(),800,600));
+        Client client = new Client(new Controller().connect());
+        primaryStage.setScene(new Scene(client.getController().root(),800,600));
         primaryStage.setResizable(false);
         primaryStage.show();
-        Client client = new Client(controller.connect());
         client.play();
     }
 

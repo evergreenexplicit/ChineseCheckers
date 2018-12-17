@@ -9,6 +9,7 @@ public class Client {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
+    private Controller controller = new Controller();
     Game game;
 
     Client(String serverAddress) throws Exception{
@@ -38,4 +39,7 @@ public class Client {
         }
     }
 
+    public Controller getController() {
+        return controller;
+    }
 }
