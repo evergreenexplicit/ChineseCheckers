@@ -3,7 +3,7 @@ import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
-public class Board extends Group implements Game{
+public class Classic extends Group implements Game{
 
     Field[][] fields;
     int sideLength;
@@ -11,7 +11,7 @@ public class Board extends Group implements Game{
     int vertical;
     Color defaultColor;
 
-    Board(int sideLength){
+    Classic(int sideLength){
         this.sideLength = sideLength;
         this.horizontal = 6*sideLength+1;
         this.vertical = 4*sideLength+1;
@@ -163,4 +163,5 @@ public class Board extends Group implements Game{
             }
         }
     }
+
 }

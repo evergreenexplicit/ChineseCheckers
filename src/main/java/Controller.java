@@ -10,19 +10,22 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 public class Controller {
 
     final int gridPrefWidth = 200;
     final int menuBarPrefHeight = 20;
     Pane pane;
-    Board group = new Board(4);
 
     Parent root(){
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(createMenu());
         borderPane.setRight(createGrid());
-        pane = (Pane) createPane();
-        borderPane.setCenter(pane);
+        //pane = (Pane) createPane();
+        //borderPane.setCenter(pane);
         //borderPane.setBottom(label());
         return borderPane;
     }
@@ -64,17 +67,42 @@ public class Controller {
         hBox2.getChildren().addAll(test,test2);
         test2.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                group.fillFields(pane.getHeight(), pane.getWidth(), 6);
-                group.test();
             }
         });
         gridPane.add(hBox2,0,2,2,1);
         return gridPane;
     }
 
-    private Node createPane(){
-        return new Pane(group);
+    /*private Node createPane(){
+        return new Pane((Node) game);
+    }*/
+
+    public String selectRules() {
+        List<String> choices = new ArrayList<>();
+        choices.add("2");
+        choices.add("3");
+        choices.add("4");
+        choices.add("6");
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("2", choices);
+        dialog.setTitle("Choice Dialog");
+        dialog.setHeaderText("Look, a Choice Dialog");
+        dialog.setContentText("Choose your letter:");
+
+        Optional<String> result = dialog.showAndWait();
+        return result.map(s -> "CLASSIC_" + s).orElseGet(this::selectRules);
     }
+
+    public String connect(){
+        TextInputDialog dialog = new TextInputDialog("walter");
+        dialog.setTitle("Text Input Dialog");
+        dialog.setHeaderText("Look, a Text Input Dialog");
+        dialog.setContentText("Please enter your name:");
+
+        Optional<String> result = dialog.showAndWait();
+        return result.orElseGet(this::connect);
+    }
+
 
 
     /*public Node label(){

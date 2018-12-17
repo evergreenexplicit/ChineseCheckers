@@ -1,6 +1,6 @@
 import javafx.scene.paint.Color;
 
-public interface Game {
+public interface Game{
     void fillFields(double height, double width, int players);
     void setFieldDefaultColor(int horizontal, int vertical);
     void setFieldColor(int horizontal, int vertical, Color color);
@@ -12,4 +12,5 @@ public interface Game {
     void fillBottomRight();
     void fillBottomLeft();*/
     void swapFields(int firstHorizontal, int firstVertical, int secondHorizontal, int secondVertical);
+    void test();
 }
