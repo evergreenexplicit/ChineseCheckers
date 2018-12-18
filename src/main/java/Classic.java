@@ -19,7 +19,7 @@ public class Classic extends Group implements Game{
         defaultColor = Color.BLACK;
     }
 
-    public void fillFields (double height, double width, int players){
+    public void startGame (double height, double width, int players){
         double rh = (height-40)/(5 * Math.sqrt(3)* sideLength +2);
         double rw = (width - 40)/(7.5 * sideLength + 2);
         double radius = Math.min(rh,rw);
@@ -148,6 +148,19 @@ public class Classic extends Group implements Game{
     public void swapFields(int firstHorizontal, int firstVertical, int secondHorizontal, int secondVertical){
         setFieldColor(secondHorizontal, secondVertical, getFieldColor(firstHorizontal, firstVertical));
         setFieldDefaultColor(firstHorizontal, firstVertical);
+    }
+
+    @Override
+    public Field getField(int i, int j) {
+        return fields[i][j];
+    }
+
+    public int getHorizontal() {
+        return horizontal;
+    }
+
+    public int getVertical() {
+        return vertical;
     }
 
     public void test(){

@@ -2,13 +2,16 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +22,20 @@ public class Controller {
     final int gridPrefWidth = 200;
     final int menuBarPrefHeight = 20;
     Pane pane;
+    Game game;
+
+    void init(){
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root(),800,600));
+        stage.setResizable(false);
+        stage.show();
+    }
 
     Parent root(){
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(createMenu());
         borderPane.setRight(createGrid());
-        //pane = (Pane) createPane();
-        //borderPane.setCenter(pane);
-        //borderPane.setBottom(label());
+        borderPane.setCenter(pane);
         return borderPane;
     }
 
@@ -73,9 +82,17 @@ public class Controller {
         return gridPane;
     }
 
-    /*private Node createPane(){
-        return new Pane((Node) game);
-    }*/
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setPane(){
+        this.pane = new Pane((Group) game);
+    }
 
     public String selectRules() {
         List<String> choices = new ArrayList<>();
@@ -93,7 +110,7 @@ public class Controller {
         return result.map(s -> "CLASSIC_" + s).orElseGet(this::selectRules);
     }
 
-    public String connect(){
+    public String connect() {
         TextInputDialog dialog = new TextInputDialog("walter");
         dialog.setTitle("Text Input Dialog");
         dialog.setHeaderText("Look, a Text Input Dialog");
@@ -101,6 +118,16 @@ public class Controller {
 
         Optional<String> result = dialog.showAndWait();
         return result.orElseGet(this::connect);
+    }
+
+    public double getPaneHeight(){
+        System.out.println(pane.getHeight());
+        return pane.getHeight();
+    }
+
+    public double getPaneWidth(){
+        System.out.println(pane.getWidth());
+        return pane.getWidth();
     }
 
 
