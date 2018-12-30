@@ -62,15 +62,14 @@ public class Client extends Thread{
         String response;
         try {
             response = in.readLine();
-            if(response.startsWith("RULES_REQ")){
+            if(response.startsWith("RULES_REQ")) {
                 String rules = controller.selectRules();
                 out.println(rules);
-                if(rules.startsWith("CLASSIC")){
+                if (rules.startsWith("CLASSIC")) {
                     setRules(rules);
                 }
-            } else {
-                t.start();
             }
+            t.start();
         } finally {
             socket.close();
         }
