@@ -22,29 +22,29 @@ public class Client extends Thread{
         @Override
         public void run(){
             String response;
-            while(true){
-                try {
-                    response = in.readLine();
-                    if(response.startsWith("CLASSIC")) {
-                        setRules(response);
-                    } else if(response.startsWith("MOVED")) {
-                        //swapFields
-                    } else if(response.startsWith("INVALID_MOVE")){
-                        //label wrong move
-                    } else if(response.startsWith("YOUR_TURN")){
-                        //
-                    } else if(response.startsWith("GAME_OVER")){
-                        break;
-                    }
-                    try{
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
+                while (true) {
+                    try {
+                        response = in.readLine();
+                        if (response.startsWith("CLASSIC")) {
+                            setRules(response);
+                        } else if (response.startsWith("MOVED")) {
+                            //swapFields
+                        } else if (response.startsWith("INVALID_MOVE")) {
+                            //label wrong move
+                        } else if (response.startsWith("YOUR_TURN")) {
+                            //
+                        } else if (response.startsWith("GAME_OVER")) {
+                            break;
+                        }
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-            }
         }
     };
 
@@ -58,21 +58,17 @@ public class Client extends Thread{
     }
 
 
-    public void play() throws Exception{
+    public void play() throws Exception {
         String response;
-        try {
-            response = in.readLine();
-            if(response.startsWith("RULES_REQ")) {
-                String rules = controller.selectRules();
-                out.println(rules);
-                if (rules.startsWith("CLASSIC")) {
-                    setRules(rules);
-                }
+        response = in.readLine();
+        if (response.startsWith("RULES_REQ")) {
+            String rules = controller.selectRules();
+            out.println(rules);
+            if (rules.startsWith("CLASSIC")) {
+                setRules(rules);
             }
-            t.start();
-        } finally {
-            socket.close();
         }
+        t.start();
     }
 
 
@@ -90,7 +86,7 @@ public class Client extends Thread{
                 controller.getGame().getField(i,j).setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        System.out.println("Click");
+                        System.out.println("CLICK "+ finalI +" "+ finalJ);
                         out.println("CLICK "+ finalI +" "+ finalJ);
                     }
                 });
