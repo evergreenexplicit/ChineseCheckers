@@ -18,6 +18,36 @@ public class Client extends Thread{
     private Game game;
     boolean bool = true;
 
+    Thread t = new Thread(){
+        @Override
+        public void run(){
+            String response;
+            while(true){
+                try {
+                    response = in.readLine();
+                    if(response.startsWith("CLASSIC")) {
+                        setRules(response);
+                    } else if(response.startsWith("MOVED")) {
+                        //swapFields
+                    } else if(response.startsWith("INVALID_MOVE")){
+                        //label wrong move
+                    } else if(response.startsWith("YOUR_TURN")){
+                        //
+                    } else if(response.startsWith("GAME_OVER")){
+                        break;
+                    }
+                    try{
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
+
     Client(String serverAddress) throws Exception{
         socket = new Socket(serverAddress,PORT);
         in = new BufferedReader(
@@ -26,6 +56,7 @@ public class Client extends Thread{
         ));
         out = new PrintWriter(socket.getOutputStream(), true);
     }
+
 
     public void play() throws Exception{
         String response;
@@ -38,11 +69,7 @@ public class Client extends Thread{
                     setRules(rules);
                 }
             } else {
-                while(true){
-                    response = in.readLine();
-                    if(response.startsWith("CLASSIC"));
-                    setRules(response);
-                }
+                t.start();
             }
         } finally {
             socket.close();
@@ -64,6 +91,7 @@ public class Client extends Thread{
                 controller.getGame().getField(i,j).setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
+                        System.out.println("Click");
                         out.println("CLICK "+ finalI +" "+ finalJ);
                     }
                 });
