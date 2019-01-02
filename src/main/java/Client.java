@@ -1,6 +1,5 @@
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,35 +15,52 @@ public class Client extends Thread{
     private PrintWriter out;
     private Controller controller = new Controller();
     private Game game;
-    boolean bool = true;
 
-    Thread t = new Thread(){
+    private Thread t = new Thread(){
         @Override
         public void run(){
             String response;
-                while (true) {
+            while (true) {
+                try {
+                    response = in.readLine();
+                    if (response.startsWith("CLASSIC")) {
+                        setRules(response);
+                    } else if (response.startsWith("MESSAGE")) {
+                        controller.setLabel(response.substring(8));
+                        if (response.substring(8).equals("Invalid move") ||
+                                response.substring(8).equals("Move cancelled")) {
+                            game.revokeHighlighting();
+                        }
+                    } else if (response.startsWith("POSSIBLE_MOVES")) {
+                        String[] strings = response.split(" ");
+                        int[] fields = new int[strings.length - 1];
+                        for (int i = 1; i < strings.length; i++) {
+                            fields[i - 1] = Integer.parseInt(strings[i]);
+                        }
+                        game.highlightPossibleMoves(fields);
+                    } else if (response.startsWith("MOVED")) {
+                        String[] strings = response.split(" ");
+                        if (strings.length == 5) {
+                            game.swapFields(Integer.parseInt(strings[1]), Integer.parseInt(strings[2]),
+                                    Integer.parseInt(strings[3]), Integer.parseInt(strings[4]));
+                        }
+                    } else if (response.startsWith("GAME_OVER")) {
+                        break;
+                    }
                     try {
-                        response = in.readLine();
-                        if (response.startsWith("CLASSIC")) {
-                            setRules(response);
-                        } else if (response.startsWith("MOVED")) {
-                            //swapFields
-                        } else if (response.startsWith("INVALID_MOVE")) {
-                            //label wrong move
-                        } else if (response.startsWith("YOUR_TURN")) {
-                            //
-                        } else if (response.startsWith("GAME_OVER")) {
-                            break;
-                        }
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    } catch (IOException e) {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+            }
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     };
 
@@ -87,7 +103,7 @@ public class Client extends Thread{
                     @Override
                     public void handle(MouseEvent event) {
                         System.out.println("CLICK "+ finalI +" "+ finalJ);
-                        out.println("CLICK "+ finalI +" "+ finalJ);
+                        out.println("POSSIBLE_MOVES_REQ "+ finalI +" "+ finalJ);
                     }
                 });
             }

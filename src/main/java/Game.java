@@ -13,6 +13,8 @@ public interface Game{
     void fillBottomLeft();*/
     int getHorizontal();
     int getVertical();
+    void highlightPossibleMoves(int[] fields);
+    void revokeHighlighting();
 
     default Field getField(int i, int j) {
         return null;

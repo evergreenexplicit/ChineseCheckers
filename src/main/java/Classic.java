@@ -5,11 +5,12 @@ import javafx.scene.paint.Color;
 
 public class Classic extends Group implements Game{
 
-    Field[][] fields;
-    int sideLength;
-    int horizontal;
-    int vertical;
-    Color defaultColor;
+    private Field[][] fields;
+    private int sideLength;
+    private int horizontal;
+    private int vertical;
+    private Color defaultColor;
+    private int[] highlighted;
 
     Classic(int sideLength){
         this.sideLength = sideLength;
@@ -177,4 +178,19 @@ public class Classic extends Group implements Game{
         }
     }
 
+    public void highlightPossibleMoves(int[] fields){
+        highlighted = fields;
+        for(int i=0; i<fields.length/2; i++){
+            setFieldColor(fields[2*i], fields[2*i+1], Color.LIGHTGRAY);
+        }
+    }
+
+    public void revokeHighlighting(){
+        if(highlighted != null){
+            for(int i=0; i<highlighted.length/2; i++){
+                setFieldColor(highlighted[2*i], highlighted[2*i+1], defaultColor);
+            }
+            highlighted = null;
+        }
+    }
 }

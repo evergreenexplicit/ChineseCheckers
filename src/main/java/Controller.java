@@ -23,6 +23,7 @@ public class Controller {
     final int menuBarPrefHeight = 20;
     Pane pane;
     Game game;
+    Label label = new Label("Info: ");
 
     void init(){
         Stage stage = new Stage();
@@ -107,7 +108,7 @@ public class Controller {
         dialog.setContentText("Players:");
 
         Optional<String> result = dialog.showAndWait();
-        return result.map(s -> "CLASSIC_" + s).orElseGet(this::selectRules);
+        return result.map(s -> "CLASSIC " + s).orElseGet(this::selectRules);
     }
 
     public String connect() {
@@ -130,11 +131,7 @@ public class Controller {
         return pane.getWidth();
     }
 
-
-
-    /*public Node label(){
-        Label label = new Label();
-
-        return label;
-    }*/
+    public void setLabel(String label) {
+        this.label.setText("Info: " + label);
+    }
 }
