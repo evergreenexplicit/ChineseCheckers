@@ -23,7 +23,12 @@ public class Client extends Thread{
             while (true) {
                 try {
                     response = in.readLine();
-                    if (response.startsWith("CLASSIC")) {
+                    if(response!=null){
+                        System.out.println(response);
+                    }
+                    if(response==null){
+                        continue;
+                    } else if (response.startsWith("CLASSIC")) {
                         setRules(response);
                     } else if (response.startsWith("MESSAGE")) {
                         controller.setLabel(response.substring(8));
