@@ -102,19 +102,19 @@ public class Controller {
         choices.add("6");
 
         ChoiceDialog<String> dialog = new ChoiceDialog<>("2", choices);
-        dialog.setTitle("Choice Dialog");
-        dialog.setHeaderText("Look, a Choice Dialog");
-        dialog.setContentText("Choose your letter:");
+        dialog.setTitle("Number of Players");
+        dialog.setHeaderText("Select number of players");
+        dialog.setContentText("Players:");
 
         Optional<String> result = dialog.showAndWait();
         return result.map(s -> "CLASSIC_" + s).orElseGet(this::selectRules);
     }
 
     public String connect() {
-        TextInputDialog dialog = new TextInputDialog("walter");
-        dialog.setTitle("Text Input Dialog");
-        dialog.setHeaderText("Look, a Text Input Dialog");
-        dialog.setContentText("Please enter your name:");
+        TextInputDialog dialog = new TextInputDialog("localhost");
+        dialog.setTitle("Connect to server");
+        dialog.setHeaderText(null);
+        dialog.setContentText("Socket:");
 
         Optional<String> result = dialog.showAndWait();
         return result.orElseGet(this::connect);
