@@ -15,6 +15,9 @@ public class Client extends Thread{
     private PrintWriter out;
     private Controller controller = new Controller();
     private Game game;
+    private int clickCounter = 0;
+    private int firstX;
+    private int firstY;
 
     private Thread t = new Thread(){
         @Override
@@ -24,17 +27,18 @@ public class Client extends Thread{
                 try {
                     response = in.readLine();
                     if(response!=null){
-                        System.out.println(response);
+                        System.out.println("System: " + response);
                     }
                     if(response==null){
                         continue;
-                    } else if (response.startsWith("CLASSIC")) {
-                        setRules(response);
                     } else if (response.startsWith("MESSAGE")) {
                         controller.setLabel(response.substring(8));
                         if (response.substring(8).equals("Invalid move") ||
-                                response.substring(8).equals("Move cancelled")) {
+                                response.substring(8).equals("Move cancelled") ||
+                                response.substring(8).equals("Not your pawn")||
+                                response.substring(8).equals("Not your turn")){
                             game.revokeHighlighting();
+                            clickCounter=0;
                         }
                     } else if (response.startsWith("POSSIBLE_MOVES")) {
                         String[] strings = response.split(" ");
@@ -45,6 +49,7 @@ public class Client extends Thread{
                         game.highlightPossibleMoves(fields);
                     } else if (response.startsWith("MOVED")) {
                         String[] strings = response.split(" ");
+                        game.revokeHighlighting();
                         if (strings.length == 5) {
                             game.swapFields(Integer.parseInt(strings[1]), Integer.parseInt(strings[2]),
                                     Integer.parseInt(strings[3]), Integer.parseInt(strings[4]));
@@ -88,6 +93,8 @@ public class Client extends Thread{
             if (rules.startsWith("CLASSIC")) {
                 setRules(rules);
             }
+        } else if (response.startsWith("CLASSIC")){
+            setRules(response);
         }
         t.start();
     }
@@ -107,11 +114,26 @@ public class Client extends Thread{
                 controller.getGame().getField(i,j).setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        System.out.println("CLICK "+ finalI +" "+ finalJ);
-                        out.println("POSSIBLE_MOVES_REQ "+ finalI +" "+ finalJ);
+                        click(finalI,finalJ);
                     }
                 });
             }
+        }
+    }
+
+    private void click(int x, int y){
+        if(clickCounter==0){
+            System.out.println("CLIENT POSSIBLE_MOVES_REQ " + x + " " + y);
+            out.println("POSSIBLE_MOVES_REQ " + x + " " + y);
+            firstX = x;
+            firstY = y;
+            clickCounter = 1;
+        } else {
+            System.out.println("CLIENT MOVE_REQ " + firstX + " " + firstY + " " + x + " " + y);
+            out.println("MOVE_REQ " + firstX + " " + firstY + " " + x + " " + y);
+            firstX = -1;
+            firstY = -1;
+            clickCounter = 0;
         }
     }
 
