@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
@@ -32,7 +33,8 @@ public class Client extends Thread{
                     if(response==null){
                         continue;
                     } else if (response.startsWith("MESSAGE")) {
-                        controller.setLabel(response.substring(8));
+                        String finalResponse = response;
+                        Platform.runLater(() -> controller.setLabel(finalResponse.substring(8)));
                         if (response.substring(8).equals("Invalid move") ||
                                 response.substring(8).equals("Move cancelled") ||
                                 response.substring(8).equals("Not your pawn")||
@@ -111,14 +113,12 @@ public class Client extends Thread{
             for(int j=0; j<controller.getGame().getVertical(); j++){
                 int finalI = i;
                 int finalJ = j;
-                controller.getGame().getField(i,j).setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        click(finalI,finalJ);
-                    }
-                });
+                controller.getGame().getField(i,j).setOnMouseClicked(event -> click(finalI,finalJ));
             }
         }
+        controller.getEndTurn().setOnMouseClicked(event -> {
+           out.println("END_TURN");
+        });
     }
 
     private void click(int x, int y){

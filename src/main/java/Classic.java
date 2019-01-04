@@ -1,6 +1,4 @@
-import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 public class Classic extends Group implements Game{
@@ -164,19 +162,6 @@ public class Classic extends Group implements Game{
         return vertical;
     }
 
-    public void test(){
-        for(int i=0; i<horizontal; i++){
-            for(int j=0; j<vertical; j++){
-                final int finalI = i;
-                final int finalJ = j;
-                fields[i][j].setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent event) {
-                        System.out.println("click: "+ finalI + " " + finalJ);
-                    }
-                });
-            }
-        }
-    }
 
     public void highlightPossibleMoves(int[] fields){
         highlighted = fields;

@@ -21,5 +21,4 @@ public interface Game{
     }
 
     void swapFields(int firstHorizontal, int firstVertical, int secondHorizontal, int secondVertical);
-    void test();
 }
