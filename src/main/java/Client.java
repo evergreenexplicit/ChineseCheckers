@@ -1,6 +1,5 @@
 import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,29 +18,37 @@ public class Client extends Thread{
     private int clickCounter = 0;
     private int firstX;
     private int firstY;
+    private int players;
+    private int player;
 
     private Thread t = new Thread(){
         @Override
         public void run(){
             String response;
-            while (true) {
-                try {
+            try {
+                while (true) {
                     response = in.readLine();
-                    if(response!=null){
+                    if (response != null) {
                         System.out.println("System: " + response);
                     }
-                    if(response==null){
+                    if (response == null) {
                         continue;
                     } else if (response.startsWith("MESSAGE")) {
                         String finalResponse = response;
-                        Platform.runLater(() -> controller.setLabel(finalResponse.substring(8)));
-                        if (response.substring(8).equals("Invalid move") ||
-                                response.substring(8).equals("Move cancelled") ||
-                                response.substring(8).equals("Not your pawn")||
-                                response.substring(8).equals("Not your turn")){
+                        String message = response.substring(8);
+                        Platform.runLater(() -> controller.setInfoLabel(finalResponse.substring(8)));
+                        if (message.equals("Invalid move") ||
+                                message.equals("Move cancelled") ||
+                                message.equals("Not your pawn") ||
+                                message.equals("Not your turn")) {
                             game.revokeHighlighting();
-                            clickCounter=0;
+                            clickCounter = 0;
+                        } else if(message.startsWith("You are player")){
+                            player = Integer.parseInt(message.substring(15));
+                            setCircleColor(player,players);
                         }
+                    } else if (response.startsWith("WIN")){
+
                     } else if (response.startsWith("POSSIBLE_MOVES")) {
                         String[] strings = response.split(" ");
                         int[] fields = new int[strings.length - 1];
@@ -64,14 +71,18 @@ public class Client extends Thread{
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-            }
-            try {
-                socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                Platform.runLater(() -> controller.serverError());
+            }
+            finally {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Platform.runLater(() -> controller.serverError());
+                }
             }
         }
     };
@@ -86,16 +97,20 @@ public class Client extends Thread{
     }
 
 
-    public void play() throws Exception {
+    void play() throws Exception {
         String response;
         response = in.readLine();
+        System.out.println(response);
         if (response.startsWith("RULES_REQ")) {
+            player = 0;
             String rules = controller.selectRules();
             out.println(rules);
             if (rules.startsWith("CLASSIC")) {
                 setRules(rules);
             }
-        } else if (response.startsWith("CLASSIC")){
+            setCircleColor(player,players);
+        }
+        if (response.startsWith("CLASSIC")){
             setRules(response);
         }
         t.start();
@@ -103,9 +118,9 @@ public class Client extends Thread{
 
 
     private void setRules(String rules) {
-        int players = Character.getNumericValue(rules.charAt(8));
+        players = Character.getNumericValue(rules.charAt(8));
         game = new Classic(4);
-        controller.setGame(getGame());
+        controller.setGame(game);
         controller.setPane();
         controller.init();
         controller.getGame().startGame(580,600,players);
@@ -117,7 +132,7 @@ public class Client extends Thread{
             }
         }
         controller.getEndTurn().setOnMouseClicked(event -> {
-           out.println("END_TURN");
+           out.println("END_TURN_REQ");
         });
     }
 
@@ -137,11 +152,38 @@ public class Client extends Thread{
         }
     }
 
-    public Controller getController() {
-        return controller;
-    }
-
-    public Game getGame() {
-        return game;
+    private void setCircleColor(int player, int players){
+        if(player == 0){
+            if(players != 4){
+                controller.setPlayersCircleColor(Color.RED);
+            }
+            else {
+                controller.setPlayersCircleColor(Color.PURPLE);
+            }
+        } else if (player == 1) {
+            if (players == 6) {
+                controller.setPlayersCircleColor(Color.PURPLE);
+            } else if (players == 2){
+                controller.setPlayersCircleColor(Color.GREEN);
+            } else {
+                controller.setPlayersCircleColor(Color.BLUE);
+            }
+        } else if (player == 2){
+            if (players == 6){
+                controller.setPlayersCircleColor(Color.BLUE);
+            } else {
+                controller.setPlayersCircleColor(Color.YELLOW);
+            }
+        } else if (player == 3){
+            if (players == 4){
+                controller.setPlayersCircleColor(Color.ORANGE);
+            } else {
+                controller.setPlayersCircleColor(Color.GREEN);
+            }
+        } else if (player == 4){
+            controller.setPlayersCircleColor(Color.YELLOW);
+        } else {
+            controller.setPlayersCircleColor(Color.ORANGE);
+        }
     }
 }

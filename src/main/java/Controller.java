@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -9,6 +10,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -19,15 +22,21 @@ public class Controller {
 
     private final int gridPrefWidth = 200;
     private final int menuBarPrefHeight = 20;
+    private Stage stage;
     private Pane pane;
     private Game game;
-    private Label label = new Label("Info: ");
+    private Label infoLabel = new Label("Info: ");
     private Button endTurn = new Button("End Turn");
+    private Circle playersCircle = new Circle(0);
 
     void init(){
-        Stage stage = new Stage();
+        stage = new Stage();
         stage.setScene(new Scene(root(),800,600));
         stage.setResizable(false);
+        stage.setOnCloseRequest(event -> {
+            Platform.exit();
+            System.exit(0);
+        });
         stage.show();
     }
 
@@ -45,7 +54,7 @@ public class Controller {
         Menu infoMenu = new Menu("Info");
         MenuItem rulesInfo = new MenuItem("Rules");
         MenuItem authorInfo = new MenuItem("Authors");
-        infoMenu.getItems().addAll(rulesInfo,authorInfo);
+        infoMenu.getItems().addAll(/*rulesInfo,*/authorInfo);
         menuBar.getMenus().addAll(/*gameMenu,*/infoMenu);
         return menuBar;
     }
@@ -57,10 +66,14 @@ public class Controller {
         gridPane.setVgap(20);
         gridPane.setPadding(new Insets(20));
         gridPane.setPrefWidth(gridPrefWidth);
+        Label label = new Label("Your pawns: ");
+        playersCircle.setRadius(10);
         HBox hBox1 = new HBox();
         hBox1.getChildren().add(endTurn);
         gridPane.add(hBox1,0,0);
-        gridPane.add(label,0,1);
+        gridPane.add(infoLabel,0,1);
+        gridPane.add(label,0,2);
+        gridPane.add(playersCircle,1,2);
         return gridPane;
     }
 
@@ -92,15 +105,6 @@ public class Controller {
         return result.map(s -> "CLASSIC " + s).orElseGet(this::selectRules);
     }
 
-    String connect() {
-        TextInputDialog dialog = new TextInputDialog("localhost");
-        dialog.setTitle("Connect to server");
-        dialog.setHeaderText(null);
-        dialog.setContentText("Socket:");
-
-        Optional<String> result = dialog.showAndWait();
-        return result.orElseGet(this::connect);
-    }
 
     public double getPaneHeight(){
         System.out.println(pane.getHeight());
@@ -112,11 +116,26 @@ public class Controller {
         return pane.getWidth();
     }
 
-    void setLabel(String label) {
-        this.label.setText("Info: " + label);
+    void setInfoLabel(String infoLabel) {
+        this.infoLabel.setText("Info: " + infoLabel);
     }
+
 
     Button getEndTurn(){
         return endTurn;
+    }
+
+
+    void serverError(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERROR");
+        alert.setHeaderText("An exception has occurred");
+        alert.setContentText("Server seems to have stopped, your game will end now");
+        alert.showAndWait();
+        stage.close();
+    }
+
+    public void setPlayersCircleColor(Color color) {
+        playersCircle.setFill(color);
     }
 }
