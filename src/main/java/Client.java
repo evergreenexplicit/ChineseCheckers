@@ -21,9 +21,9 @@ public class Client extends Thread{
     private int players;
     private int player;
 
-    private Thread t = new Thread(){
+    private Thread t = new Thread() {
         @Override
-        public void run(){
+        public void run() {
             String response;
             try {
                 while (true) {
@@ -43,12 +43,15 @@ public class Client extends Thread{
                                 message.equals("Not your turn")) {
                             game.revokeHighlighting();
                             clickCounter = 0;
-                        } else if(message.startsWith("You are player")){
+                        } else if (message.startsWith("You are player")) {
                             player = Integer.parseInt(message.substring(15));
-                            setCircleColor(player,players);
+                            setCircleColor(player, players);
                         }
-                    } else if (response.startsWith("WIN")){
-
+                    } else if (response.startsWith("WIN")) {
+                        int k = Integer.parseInt(response.substring(4));
+                        if (!controller.youWin(k)) {
+                            break;
+                        }
                     } else if (response.startsWith("POSSIBLE_MOVES")) {
                         String[] strings = response.split(" ");
                         int[] fields = new int[strings.length - 1];
@@ -63,7 +66,7 @@ public class Client extends Thread{
                             game.swapFields(Integer.parseInt(strings[1]), Integer.parseInt(strings[2]),
                                     Integer.parseInt(strings[3]), Integer.parseInt(strings[4]));
                         }
-                    } else if (response.startsWith("GAME_OVER")) {
+                    } else if (response.startsWith("END")) {
                         break;
                     }
                     try {
@@ -73,14 +76,13 @@ public class Client extends Thread{
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 Platform.runLater(() -> controller.serverError());
-            }
-            finally {
+            } finally {
                 try {
                     socket.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                     Platform.runLater(() -> controller.serverError());
                 }
             }

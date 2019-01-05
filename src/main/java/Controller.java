@@ -135,7 +135,17 @@ public class Controller {
         stage.close();
     }
 
-    public void setPlayersCircleColor(Color color) {
+    void setPlayersCircleColor(Color color) {
         playersCircle.setFill(color);
+    }
+
+    boolean youWin(int place){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("You placed " + place);
+        alert.setHeaderText("Do you want to continue spectating?");
+        alert.setContentText("Press OK to confirm or CANCEL to quit the game");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == ButtonType.OK;
     }
 }
