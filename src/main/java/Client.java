@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Client extends Thread{
 
@@ -48,9 +49,13 @@ public class Client extends Thread{
                             setCircleColor(player, players);
                         }
                     } else if (response.startsWith("WIN")) {
-                        int k = Integer.parseInt(response.substring(4));
-                        if (!controller.youWin(k)) {
-                            break;
+                        int won = Integer.parseInt(response.substring(4));
+                        AtomicBoolean continuePlaying = new AtomicBoolean(false);
+                        if (won == player){
+                            Platform.runLater(() -> continuePlaying.set(controller.youWin(true)));
+                            if (continuePlaying.get()){
+                                break;
+                            }
                         }
                     } else if (response.startsWith("POSSIBLE_MOVES")) {
                         String[] strings = response.split(" ");
@@ -66,7 +71,21 @@ public class Client extends Thread{
                             game.swapFields(Integer.parseInt(strings[1]), Integer.parseInt(strings[2]),
                                     Integer.parseInt(strings[3]), Integer.parseInt(strings[4]));
                         }
+                    } else if (response.startsWith("LOSE")){
+                        int lost = Integer.parseInt(response.substring(5));
+                        AtomicBoolean continuePlaying = new AtomicBoolean(false);
+                        if (lost == player){
+                            Platform.runLater(() -> continuePlaying.set(controller.youWin(false)));
+                            if (continuePlaying.get()){
+                                break;
+                            }
+                        }
                     } else if (response.startsWith("END")) {
+                        int won = Integer.parseInt(response.substring(4));
+                        Platform.runLater(() -> {
+                            controller.youWin(won == player);
+                            controller.gameOver();
+                        });
                         break;
                     }
                     try {
@@ -81,6 +100,7 @@ public class Client extends Thread{
             } finally {
                 try {
                     socket.close();
+                    System.out.println("socket closed");
                 } catch (IOException e) {
                     //e.printStackTrace();
                     Platform.runLater(() -> controller.serverError());

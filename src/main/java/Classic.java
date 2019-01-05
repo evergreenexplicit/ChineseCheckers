@@ -27,7 +27,7 @@ public class Classic extends Group implements Game{
             for (int i = 0; i < horizontal; i++) {
                 double fieldX = 20 + ((1 + (i * 1.25)) * radius);
                 double fieldY = 20 + ((1 + (j * 1.25 * Math.sqrt(3))) * radius);
-                fields[i][j] = new Field(fieldX, fieldY, radius, i, j);
+                fields[i][j] = new Field(fieldX, fieldY, radius);
                 fields[i][j].setFill(defaultColor);
                 fields[i][j].setVisible(false);
                 if (j < sideLength){

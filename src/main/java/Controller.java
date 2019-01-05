@@ -139,13 +139,27 @@ public class Controller {
         playersCircle.setFill(color);
     }
 
-    boolean youWin(int place){
+    boolean youWin(boolean win){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("You placed " + place);
-        alert.setHeaderText("Do you want to continue spectating?");
+        if(win){
+            alert.setTitle("You won");
+            alert.setHeaderText("YOU WON, Do you want to continue spectating?");
+        } else {
+            alert.setTitle("You lost");
+            alert.setHeaderText("YOU LOST, Do you want to continue spectating?");
+        }
         alert.setContentText("Press OK to confirm or CANCEL to quit the game");
 
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
+    }
+
+    void gameOver(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Game Over");
+        alert.setHeaderText("Game has finished, thank you for playing!");
+        alert.setContentText("The game will close now");
+        alert.showAndWait();
+        stage.close();
     }
 }
