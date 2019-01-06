@@ -54,6 +54,7 @@ public class Client extends Thread{
                         if (won == player){
                             Platform.runLater(() -> continuePlaying.set(controller.youWin(true)));
                             if (continuePlaying.get()){
+                                controller.gameOver();
                                 break;
                             }
                         }
@@ -77,15 +78,18 @@ public class Client extends Thread{
                         if (lost == player){
                             Platform.runLater(() -> continuePlaying.set(controller.youWin(false)));
                             if (continuePlaying.get()){
+                                controller.gameOver();
                                 break;
                             }
                         }
                     } else if (response.startsWith("END")) {
                         int won = Integer.parseInt(response.substring(4));
-                        Platform.runLater(() -> {
-                            controller.youWin(won == player);
-                            controller.gameOver();
-                        });
+                        if (won == player){
+                            Platform.runLater(() -> {
+                                controller.youWin(true);
+                                controller.gameOver();
+                            });
+                        }
                         break;
                     }
                     try {
